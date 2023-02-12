@@ -25,7 +25,6 @@ fn sieve_of_eratosthenes(n: u32) -> Vec<u32> {
     primes
 }
 
-// todo fix panicked error
 fn sieve_of_atkin(limit: u32) -> Vec<u32> {
     let mut sieve = vec![false; limit as usize];
     if limit > 2 {
@@ -46,7 +45,7 @@ fn sieve_of_atkin(limit: u32) -> Vec<u32> {
             if n <= limit && (n % 12 == 7) {
                 sieve[n as usize] = !sieve[n as usize];
             }
-            n = (3 * x * x) - (y * y); // panicked at 'attempt to subtract with overflow'
+            n = (3 * x * x).wrapping_sub(y * y);
             if x > y && n <= limit && (n % 12 == 11) {
                 sieve[n as usize] = !sieve[n as usize];
             }
@@ -55,10 +54,10 @@ fn sieve_of_atkin(limit: u32) -> Vec<u32> {
         x += 1;
     }
     let mut r = 5;
-    while r * r <= limit {
+    while r * r < limit {
         if sieve[r as usize] {
             let mut i = r * r;
-            while i <= limit {
+            while i < limit {
                 sieve[i as usize] = false;
                 i += r * r;
             }
@@ -66,7 +65,7 @@ fn sieve_of_atkin(limit: u32) -> Vec<u32> {
         r += 1;
     }
     let mut primes: Vec<u32> = Vec::new();
-    for prime_index in 0..=limit as usize {
+    for prime_index in 0..limit as usize {
         if sieve[prime_index] {
             primes.push(prime_index as u32);
         }
@@ -74,16 +73,21 @@ fn sieve_of_atkin(limit: u32) -> Vec<u32> {
     return primes;
 }
 
+fn print_sieve(n: u32, sieve: &str) {
+    println!("***");
+    println!("Sieve of {}", sieve);
+    let mut primes= vec![0];
+    if sieve == "Eratosthenes" {
+        primes = sieve_of_atkin(n);
+    } else if sieve == "Atkin" {
+        primes = sieve_of_eratosthenes(n);
+    }
+    let p = format!("{:?}", &primes);
+    println!("{}", p);
+}
+
 fn main() {
     println!("Prime Sieves");
-    println!("***");
-    println!("Sieve of Eratosthenes");
-    let primes_e = sieve_of_eratosthenes(100);
-    let p_eratos = format!("{:?}", &primes_e);
-    println!("{}", p_eratos);
-    println!("***");
-    println!("Sieve of Atkin"); // todo fix panicked error
-    let primes_a = sieve_of_atkin(100);
-    let p_atkin = format!("{:?}", &primes_a);
-    println!("{}", p_atkin);
+    print_sieve(100, "Eratosthenes");
+    print_sieve(100, "Atkin");
 }
