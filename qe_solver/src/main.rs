@@ -46,8 +46,8 @@ fn solve_qe(a: f32, b: f32, c: f32) -> EquationRoots {
             root: x1,
         })
     } else if discriminant < 0.0 {
-        let denominator = 2.0 *a;
-        let real_part = -b / (2.0 *a);
+        let denominator = 2.0*a;
+        let real_part = -b / (2.0*a);
         let imaginary_part = format!("i((srqt {})/{})", discriminant, denominator);
         EquationRoots::ImaginaryRoots(ImaginaryRoots {
             root1: format!("{}+{}", real_part, imaginary_part),
