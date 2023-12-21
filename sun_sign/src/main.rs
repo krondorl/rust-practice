@@ -8,9 +8,10 @@ struct SunSign {
     end_day: u8,
 }
 
-fn get_sun_sign(month: u8, day: u8) -> String {
-    if month < 1 || month > 12 || day < 1 || day > 31 {
-        return String::from("invalid date");
+fn get_sun_sign(month: u8, day: u8) -> Result<String, String> {
+    let mut result_sign: String = String::from("");
+    if !(1..=31).contains(&day) || !(1..=12).contains(&month) {
+        return Err::<String, String>(String::from("invalid date"));
     }
     let signs = vec![
         SunSign {
@@ -102,17 +103,28 @@ fn get_sun_sign(month: u8, day: u8) -> String {
         if (month == sgn.start_month && day >= sgn.start_day)
             || (month == sgn.end_month && day <= sgn.end_day)
         {
-            return sgn.sign;
+            result_sign = sgn.sign;
         }
     }
-    return String::from("valid date");
+    Ok(result_sign)
+}
+
+fn print_sun_sign(month: u8, day: u8) {
+    let result = get_sun_sign(month, day);
+    match result {
+        Ok(sign) => println!("{}", sign),
+        Err(err) => println!(
+            "Error with getting sign for date (month {}, day {}) {}",
+            month, day, err
+        ),
+    };
 }
 
 fn main() {
     println!("Calculate your Sun Sign");
-    println!("");
+    println!();
 
-    println!("{}", get_sun_sign(1, 17));
-    println!("{}", get_sun_sign(7, 30));
-    println!("{}", get_sun_sign(11, 25));
+    print_sun_sign(100, 17);
+    print_sun_sign(70, 30);
+    print_sun_sign(11, 25);
 }
