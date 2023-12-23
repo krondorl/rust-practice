@@ -22,9 +22,9 @@ fn print_interests(capital: u32, annual_rate: f32, years: u32) {
     const CURRENCY: &str = "$";
     let yearly_interests = calculate_yearly_interest(capital, annual_rate, years);
     println!("Let's calculate the following");
-    println!("{}{} capital with {}% over {} years", CURRENCY, capital, annual_rate, years);
+    println!("{CURRENCY}{capital} capital with {annual_rate}% over {years} years");
     for yearly_interest in &yearly_interests {
-        println!("{}{:.2}", CURRENCY, yearly_interest);
+        println!("{CURRENCY}{yearly_interest:.2}");
     }
 }
 
