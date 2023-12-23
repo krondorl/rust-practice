@@ -125,3 +125,15 @@ fn main() {
     print_sun_sign(70, 30);
     print_sun_sign(11, 25);
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::get_sun_sign;
+
+    #[test]
+    fn get_sun_sign_test() {
+        assert_eq!(get_sun_sign(100, 17), Err(String::from("invalid date")));
+        assert_eq!(get_sun_sign(70, 30), Err(String::from("invalid date")));
+        assert_eq!(get_sun_sign(11, 25), Ok(String::from("Sagittarius")));
+    }
+}
