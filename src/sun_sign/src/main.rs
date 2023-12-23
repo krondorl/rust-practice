@@ -112,11 +112,8 @@ fn get_sun_sign(month: u8, day: u8) -> Result<String, String> {
 fn print_sun_sign(month: u8, day: u8) {
     let result = get_sun_sign(month, day);
     match result {
-        Ok(sign) => println!("{}", sign),
-        Err(err) => println!(
-            "Error with getting sign for date (month {}, day {}) {}",
-            month, day, err
-        ),
+        Ok(sign) => println!("{sign}"),
+        Err(err) => println!("Error with getting sign for date (month {month}, day {day}) {err}"),
     };
 }
 
