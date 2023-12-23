@@ -1,4 +1,8 @@
 fn fizz_buzz_for(n: u32) {
+    if n < 3 {
+        println!("Error: input parameter should be at least 3.");
+        return;
+    }
     for i in 1..=n {
         if i % 15 == 0 {
             println!("FizzBuzz");
@@ -7,12 +11,16 @@ fn fizz_buzz_for(n: u32) {
         } else if i % 5 == 0 {
             println!("Buzz");
         } else {
-            println!("{}", i);
+            println!("{i}");
         }
     }
 }
 
 fn fizz_buzz_while(n: u32) {
+    if n < 3 {
+        println!("Error: input parameter should be at least 3.");
+        return;
+    }
     let mut i = 1;
     while i <= n {
         if i % 15 == 0 {
@@ -22,13 +30,17 @@ fn fizz_buzz_while(n: u32) {
         } else if i % 5 == 0 {
             println!("Buzz");
         } else {
-            println!("{}", i);
+            println!("{i}");
         }
         i += 1;
     }
 }
 
 fn fizz_buzz_loop(n: u32) {
+    if n < 3 {
+        println!("Error: input parameter should be at least 3.");
+        return;
+    }
     let mut i = 1;
     loop {
         if i % 15 == 0 {
@@ -38,7 +50,7 @@ fn fizz_buzz_loop(n: u32) {
         } else if i % 5 == 0 {
             println!("Buzz");
         } else {
-            println!("{}", i);
+            println!("{i}");
         }
 
         if i == n {
@@ -49,36 +61,42 @@ fn fizz_buzz_loop(n: u32) {
 }
 
 fn fizz_buzz_match(n: u32) {
+    if n < 3 {
+        println!("Error: input parameter should be at least 3.");
+        return;
+    }
     for i in 1..=n {
         match (i % 3, i % 5) {
             (0, 0) => println!("FizzBuzz"),
             (0, _) => println!("Fizz"),
             (_, 0) => println!("Buzz"),
-            (_, _) => println!("{}", i)
+            (_, _) => println!("{i}"),
         }
     }
 }
 
-
 fn main() {
     println!("FizzBuzz program in multiple ways");
-    println!("");
+    println!();
+
+    fizz_buzz_for(0);
+    println!();
 
     fizz_buzz_for(30);
-    println!("");
+    println!();
     println!("***");
-    println!("");
+    println!();
 
     fizz_buzz_while(30);
-    println!("");
+    println!();
     println!("***");
-    println!("");
+    println!();
 
     fizz_buzz_loop(30);
-    println!("");
+    println!();
     println!("***");
-    println!("");
+    println!();
 
     fizz_buzz_match(30);
-    println!("");
+    println!();
 }
