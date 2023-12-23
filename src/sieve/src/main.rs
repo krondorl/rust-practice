@@ -70,24 +70,59 @@ fn sieve_of_atkin(limit: u32) -> Vec<u32> {
             primes.push(prime_index as u32);
         }
     }
-    return primes;
+    primes
 }
 
 fn print_sieve(n: u32, sieve: &str) {
+    if n < 10 {
+        println!("Error: please give a n greater or equal than 10.");
+        return;
+    }
     println!("***");
-    println!("Sieve of {}", sieve);
-    let mut primes= vec![0];
-    if sieve == "Eratosthenes" {
-        primes = sieve_of_atkin(n);
-    } else if sieve == "Atkin" {
-        primes = sieve_of_eratosthenes(n);
+    println!("Sieve of {sieve}");
+    let mut primes = vec![0];
+    match sieve {
+        "Eratosthenes" => primes = sieve_of_eratosthenes(n),
+        "Atkin" => primes = sieve_of_atkin(n),
+        _ => println!("Error: please select 'Atkin' or 'Eratosthenes' for the sieve algorithm."),
     }
     let p = format!("{:?}", &primes);
-    println!("{}", p);
+    println!("{p}");
 }
 
 fn main() {
     println!("Prime Sieves");
     print_sieve(100, "Eratosthenes");
     print_sieve(100, "Atkin");
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::{sieve_of_atkin, sieve_of_eratosthenes};
+
+    fn eq_ab(a: u32, b: u32) -> bool {
+        a == b
+    }
+
+    fn vec_compare(va: Vec<u32>, vb: Vec<u32>) -> bool {
+        (va.len() == vb.len()) && va.iter().zip(vb).all(|(a, b)| eq_ab(*a, b))
+    }
+
+    #[test]
+    fn sieve_of_eratosthenes_test() {
+        let vec_100 = vec![
+            2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83,
+            89, 97,
+        ];
+        assert!(vec_compare(sieve_of_eratosthenes(100), vec_100));
+    }
+
+    #[test]
+    fn sieve_of_atkin_test() {
+        let vec_100 = vec![
+            2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83,
+            89, 97,
+        ];
+        assert!(vec_compare(sieve_of_atkin(100), vec_100));
+    }
 }
