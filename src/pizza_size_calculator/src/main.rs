@@ -1,23 +1,25 @@
-use tabled::{Tabled, Table};
+use tabled::{Table, Tabled};
 
 // Using HUF currency and centimeter for diameter
 // Because we are comparing Hungarian made pizzas
 #[allow(dead_code)]
-#[derive(Debug)]
-#[derive(Tabled)]
+#[derive(Debug, Tabled)]
 struct Pizza {
     name: String,
     diameter_cm: u16,
     price_huf: u16,
-    area_to_price: f32
+    area_to_price: f32,
 }
 
-fn calculate_pizza_sizes(pizzas: Vec<Pizza>) -> Vec<Pizza> {
+fn calculate_pizza_sizes(pizzas: Vec<Pizza>) -> Result<Vec<Pizza>, String> {
+    if pizzas.len() < 2 {
+        return Err(String::from("Error: please set up at least 2 pizzas."));
+    }
+    const PI: f32 = std::f32::consts::PI;
     let mut calc_pizzas = Vec::new();
     for pizza in pizzas {
-        let pizza_price =
-            (pizza.price_huf as f32) /
-            (((pizza.diameter_cm as f32)*(pizza.diameter_cm  as f32)*3.1415)/4.0);
+        let pizza_price = (pizza.price_huf as f32)
+            / (((pizza.diameter_cm as f32) * (pizza.diameter_cm as f32) * PI) / 4.0);
         let pizza_item = Pizza {
             name: pizza.name,
             diameter_cm: pizza.diameter_cm,
@@ -26,14 +28,14 @@ fn calculate_pizza_sizes(pizzas: Vec<Pizza>) -> Vec<Pizza> {
         };
         calc_pizzas.push(pizza_item);
     }
-    calc_pizzas
+    Ok(calc_pizzas)
 }
 
 fn main() {
     println!("Pizza Size Calculator");
-    println!("");
-    let pizzas = vec!(
-        { 
+    println!();
+    let pizzas = vec![
+        {
             Pizza {
                 name: String::from("quattro formaggi"),
                 diameter_cm: 24,
@@ -57,8 +59,13 @@ fn main() {
                 area_to_price: 0.0,
             }
         },
-    );
+    ];
     let calc_pizzas = calculate_pizza_sizes(pizzas);
-    let pizzas_table = Table::new(calc_pizzas).to_string();
-    println!("{}", pizzas_table);
+    match calc_pizzas {
+        Ok(val) => {
+            let pizzas_table = Table::new(val).to_string();
+            println!("{pizzas_table}");
+        }
+        Err(e) => println!("{e}"),
+    }
 }
