@@ -22,12 +22,11 @@ fn largest_palindrome_product() -> i32 {
         }
     }
     palindromes.sort();
-    return palindromes[palindromes.len() - 1];
+    palindromes[palindromes.len() - 1]
 }
-
 
 fn main() {
     println!("Largest Palindrome Product");
     let lpp = largest_palindrome_product();
-    println!("{}", lpp);
+    println!("{lpp}");
 }
